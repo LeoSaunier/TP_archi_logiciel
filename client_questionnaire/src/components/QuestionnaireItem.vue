@@ -18,8 +18,7 @@ export default {
 
 <template>
     <div class="card">
-        <h3>{{ questionnaire.title }}</h3>
-        <p>{{ questionnaire.description }}</p>
+        <h3>{{ questionnaire.name }}</h3>
         <button @click="selectQuestionnaire">Select</button>
         <button @click="deleteQuestionnaire">Delete</button>
     </div>
