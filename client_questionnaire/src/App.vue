@@ -23,6 +23,6 @@ crossorigin="anonymous"/>
     </QuestionnaireItem>
   </ol>
 </div>
-<AjoutQuestionnaire></AjoutQuestionnaire>>
+<AjoutQuestionnaire></AjoutQuestionnaire>
 </template>
 
