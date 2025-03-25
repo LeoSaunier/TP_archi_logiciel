@@ -1,5 +1,6 @@
 <script setup>
 import QuestionnaireItem from './components/QuestionnaireItem.vue';
+import AjoutQuestionnaire from './components/AjoutQuestionnaire.vue';
 </script>
 
 <template>
@@ -22,8 +23,6 @@ crossorigin="anonymous"/>
     </QuestionnaireItem>
   </ol>
 </div>
-<div class="input-group">
-
-</div>
+<AjoutQuestionnaire></AjoutQuestionnaire>>
 </template>
 
