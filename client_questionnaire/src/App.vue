@@ -1,8 +1,8 @@
 <script>
-import QuestionnaireItem from './components/QuestionnaireItem.vue';
 import AllQuestionnaire from './components/AllQuestionnaire.vue';
 import AjoutQuestionnaire from './components/AjoutQuestionnaire.vue';
 import { update } from 'three/examples/jsm/libs/tween.module.js';
+import { add } from 'three/tsl';
 
 
 export default {
@@ -15,9 +15,18 @@ export default {
     deleteQuestionnaire(questionnaire) {
       this.questionnaires = this.questionnaires.filter(q => q !== questionnaire);
     },
+    UpdateQuestionnaire() {
+      fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
+    .then(response => response.json())
+    .then(data => {
+      this.questionnaires = data.questionnaires;
+    });
+    }
+
   },
   components: {
-    AllQuestionnaire
+    AllQuestionnaire,
+    AjoutQuestionnaire
   },
   mounted() {
     fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
@@ -46,7 +55,9 @@ export default {
     @questionnaireDeleted="deleteQuestionnaire"
     >
     </AllQuestionnaire>
-    <AjoutQuestionnaire></AjoutQuestionnaire>
+    <AjoutQuestionnaire
+    @UpdateQuestionnaire="UpdateQuestionnaire"
+    ></AjoutQuestionnaire>
   </div>
   <div class="input-group">
  
