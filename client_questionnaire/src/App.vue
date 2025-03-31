@@ -1,30 +1,59 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
+<script>
+import QuestionnaireItem from './components/QuestionnaireItem.vue';
+
+let selectQuestionnaire = (questionnaire) => {
+  console.log('Selected questionnaire:', questionnaire);
+};
+
+let deleteQuestionnaire = (questionnaire) => {
+  console.log('Deleted questionnaire:', questionnaire);
+};
+
+export default {
+  data() {
+    return {
+      questionnaires: []
+    };
+  },
+  components: {
+    QuestionnaireItem
+  },
+  methods: {
+    selectQuestionnaire,
+    deleteQuestionnaire
+  },
+  mounted() {
+    fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
+    .then(response => response.json())
+    .then(data => {
+      this.questionnaires = data.questionnaires;
+    });
+  }
+};
+
 </script>
 
 <template>
+    <link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+  integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+  crossorigin="anonymous"/>
   <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <h1>Gestion de questionnaires</h1>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+  <div>
+    <h2>Questionnaires</h2>
+    <ol>
+      <QuestionnaireItem
+        v-for="questionnaire in questionnaires"
+        :questionnaire="questionnaire"
+        @selectQuestionnaire="selectQuestionnaire"
+        @deleteQuestionnaire="deleteQuestionnaire">
+      </QuestionnaireItem>
+    </ol>
+  </div>
+  <div class="input-group">
+ 
+  </div>
 </template>
-
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
