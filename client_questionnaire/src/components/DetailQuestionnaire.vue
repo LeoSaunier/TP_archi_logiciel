@@ -1,9 +1,11 @@
 <script>
 import { ref, watch } from 'vue';
+import AllQuestion from './AllQuestion.vue';
 
 export default {
     props: {
-        questionnaire: Object
+        questionnaire: Object,
+        questions: Array
     },
     setup() {
         const selectedQuestionType = ref(null);
@@ -17,6 +19,9 @@ export default {
         });
 
         return { selectedQuestionType, Q1selected, Q2selected, question };
+    },
+    components: {
+        AllQuestion
     },
     methods: {
         deleteQuestionnaire() {
@@ -42,9 +47,11 @@ export default {
             <input type="text" v-model="questionnaire.name" placeholder="Questionnaire Name">
             <button @click="updateQuestionnaire">Update</button>
         </div> 
-        <div class="card" v-for="question in questionnaire.questions" :key="question.id">
-            <button @click="deleteQuestionnaire">Delete</button>
-        </div>
+        <AllQuestion
+            :questions="questions"
+            @deleteQuestion="deleteQuestionnaire"
+        >
+        </AllQuestion>
         <div>
             <fieldset>
                 <legend>Type de question :</legend>

@@ -9,7 +9,8 @@ export default {
   data() {
     return {
       questionnaires: [],
-      questionnaire: ref(null)
+      questionnaire: ref(null),
+      questions: Array,
     };
   },
   methods: {
@@ -17,6 +18,8 @@ export default {
       this.questionnaires = this.questionnaires.filter(q => q !== questionnaire);
     },
     UpdateQuestionnaire() {
+      this.questionnaires = null;
+      this.questions = null;
       fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
     .then(response => response.json())
     .then(data => {
@@ -24,7 +27,15 @@ export default {
     });
     },
     selectQuestionnaire(questionnaire) {
-      this.questionnaire = questionnaire.uri;
+      this.questionnaire = questionnaire;
+      fetch(questionnaire.uri+"/questions")
+      .then(response => response.json())
+      .then(data => {
+        this.questions = data.questions;
+      });
+
+      
+      
     }
 
   },
@@ -67,6 +78,7 @@ export default {
     <DetailQuestionnaire 
     v-if="questionnaire != null"
     :questionnaire="questionnaire"
+    :questions="questions"
     ></DetailQuestionnaire>
   </div>
   <div class="input-group">
