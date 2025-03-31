@@ -61,7 +61,7 @@ export default {
             <div v-if="Q1selected">
                 <label>
                     <input type="text" v-model="question.title" placeholder="Nom de la question">
-                    <input type="text" v-model="question.description" placeholder="Réponse">
+                    <input type="text" v-model="question.awnser" placeholder="Réponse">
                 </label>
                 <button class="btn btn-add" @click="addQuestionOuverte">Ajouter</button>
             </div>
@@ -69,6 +69,7 @@ export default {
             <div v-if="Q2selected">
                 <label>
                     <input type="text" v-model="question.title" placeholder="Nom de la question">
+                    <input type="text" v-model="question.awnser" placeholder="Réponse">
                     <input type="text" v-model="question.propositions[0]" placeholder="Proposition 1">
                     <input type="text" v-model="question.propositions[1]" placeholder="Proposition 2">
                 </label>
