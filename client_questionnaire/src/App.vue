@@ -1,6 +1,8 @@
 <script setup>
 import QuestionnaireItem from './components/QuestionnaireItem.vue';
 import AjoutQuestionnaire from './components/AjoutQuestionnaire.vue';
+import AllQuestions from './components/DetailQuestionnaire.vue';
+let selectedQuestionnaire = false;
 </script>
 
 <template>
@@ -22,7 +24,21 @@ crossorigin="anonymous"/>
       @deleteQuestionnaire="deleteQuestionnaire">
     </QuestionnaireItem>
   </ol>
+  <AjoutQuestionnaire></AjoutQuestionnaire>
 </div>
-<AjoutQuestionnaire></AjoutQuestionnaire>
+<div v-if="selectedQuestionnaire">
+  <QuestionnaireItem
+    v-if="selectedQuestionnaire"
+    :questionnaire="selectedQuestionnaire"
+    @updateQuestionnaire="updateQuestionnaire">
+  </QuestionnaireItem>
+  <h2>Questions</h2>
+  <AllQuestions
+    v-if="selectedQuestionnaire"
+    :questionnaire="questionnaire"
+    @selectQuestion="selectQuestion"
+    @deleteQuestion="deleteQuestion">
+</AllQuestions>
+</div>
 </template>
 
