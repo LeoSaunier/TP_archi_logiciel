@@ -1,12 +1,7 @@
 <script>
 import QuestionnaireItem from './components/QuestionnaireItem.vue';
-
-let selectQuestionnaire = (questionnaire) => {
-  console.log('Selected questionnaire:', questionnaire);
-  // Here you can add logic to handle the selected questionnaire
-  // For example, you might want to navigate to a different page or show more details
-  // this.$router.push({ name: 'questionnaireDetails', params: { id: questionnaire.id } });
-};
+import AllQuestionnaire from './components/AllQuestionnaire.vue';
+import { update } from 'three/examples/jsm/libs/tween.module.js';
 
 
 export default {
@@ -15,37 +10,13 @@ export default {
       questionnaires: []
     };
   },
-  components: {
-    QuestionnaireItem
-  },
   methods: {
-    selectQuestionnaire,
-    deleteQuestionnaire: function (questionnaire) {
-      console.log('Deleted questionnaire:', questionnaire);
-  fetch(questionnaire.uri,{
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "DELETE"
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Questionnaire deleted successfully");
-                    this.questionnaires = this.questionnaires.filter(q => q.uri !== questionnaire.uri);
-                } else if (response.status === 404) {
-                    console.error("Questionnaire not found");
-                } else if (response.status === 403) {
-                    console.error("You do not have permission to delete this questionnaire");
-                } else if (response.status === 500) {
-                    console.error("Server error while deleting questionnaire");
-                } else {
-                    console.error("Failed to delete questionnaire");
-                }
-            })
-            .catch(error => {
-                console.error("Error deleting questionnaire:", error);
-            });
-    }
+    deleteQuestionnaire(questionnaire) {
+      this.questionnaires = this.questionnaires.filter(q => q !== questionnaire);
+    },
+  },
+  components: {
+    AllQuestionnaire
   },
   mounted() {
     fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
@@ -69,14 +40,11 @@ export default {
   </div>
   <div>
     <h2>Questionnaires</h2>
-    <ol>
-      <QuestionnaireItem
-        v-for="questionnaire in questionnaires"
-        :questionnaire="questionnaire"
-        @selectQuestionnaire="selectQuestionnaire"
-        @deleteQuestionnaire="deleteQuestionnaire">
-      </QuestionnaireItem>
-    </ol>
+    <AllQuestionnaire
+    :questionnaires="questionnaires"
+    @questionnaireDeleted="deleteQuestionnaire"
+    >
+    </AllQuestionnaire>
   </div>
   <div class="input-group">
  
