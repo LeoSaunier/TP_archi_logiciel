@@ -1,54 +1,79 @@
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+
 export default {
-    setup() {
-        const Q1selected = ref(false);
-        const Q2selected = ref(false);
-        return { Q1selected, Q2selected };
-    },
     props: {
         questionnaire: Object
     },
+    setup() {
+        const selectedQuestionType = ref(null);
+        const Q1selected = ref(false);
+        const Q2selected = ref(false);
+        const question = ref({ title: '', description: '', propositions: ['', ''] });
+
+        watch(selectedQuestionType, (newValue) => {
+            Q1selected.value = newValue === 'Q1';
+            Q2selected.value = newValue === 'Q2';
+        });
+
+        return { selectedQuestionType, Q1selected, Q2selected, question };
+    },
     methods: {
-        selectQuestionnaire() {
-            this.$emit('selectQuestion', this.question);
-        },
         deleteQuestionnaire() {
-            this.$emit('deleteQuestion', this.question);
+            this.$emit('deleteQuestion', this.questionnaire);
+        },
+        updateQuestionnaire() {
+            this.$emit('updateQuestionnaire', this.questionnaire);
+        },
+        addQuestionOuverte() {
+            this.$emit('addQuestionOuverte', { ...this.question, type: 'Q1' });
+        },
+        addQuestionSimple() {
+            this.$emit('addQuestionSimple', { ...this.question, type: 'Q2' });
         }
     },
-    emits: ['selectQuestion', 'deleteQuestion']
+    emits: ['deleteQuestion', 'updateQuestionnaire', 'addQuestionOuverte', 'addQuestionSimple']
 };
 </script>
-
 
 <template>
     <div>
         <div>
             <input type="text" v-model="questionnaire.name" placeholder="Questionnaire Name">
+            <button @click="updateQuestionnaire">Update</button>
         </div> 
-        <div class="card" v-for = "question in questionnaire.questions">
-            <button @click="selectQuestion">Select</button>
-            <button @click="deleteQuestion">Delete</button>
+        <div class="card" v-for="question in questionnaire.questions" :key="question.id">
+            <button @click="deleteQuestionnaire">Delete</button>
         </div>
         <div>
-            <input type="select" v-model="questionnaire.name" placeholder="Questionnaire Name">
+            <fieldset>
+                <legend>Type de question :</legend>
+                <div>
+                    <input type="radio" id="Q1" value="Q1" v-model="selectedQuestionType" />
+                    <label for="Q1">Question ouverte</label>
+                </div>
+                <div>
+                    <input type="radio" id="Q2" value="Q2" v-model="selectedQuestionType" />
+                    <label for="Q2">Question simple</label>
+                </div>
+            </fieldset>
 
-            <div v-if ="Q1selected">
+            <div v-if="Q1selected">
                 <label>
-                    <input type="text" v-model="questionnaire.title" placeholder="Nom de la question">
-                    <input type="text" v-model="questionnaire.description" placeholder="Description du questionnaire">
+                    <input type="text" v-model="question.title" placeholder="Nom de la question">
+                    <input type="text" v-model="question.description" placeholder="Réponse">
                 </label>
-                <button class="btn btn-add" @click="addQuestionnaire">Ajouter</button>
+                <button class="btn btn-add" @click="addQuestionOuverte">Ajouter</button>
             </div>
-            <div v-if ="Q2selected">
+            
+            <div v-if="Q2selected">
                 <label>
-                    <input type="text" v-model="questionnaire.title" placeholder="Nom de la question">
-                    <input type="text" v-model="questionnaire.description" placeholder="Description du questionnaire">
+                    <input type="text" v-model="question.title" placeholder="Nom de la question">
+                    <input type="text" v-model="question.propositions[0]" placeholder="Proposition 1">
+                    <input type="text" v-model="question.propositions[1]" placeholder="Proposition 2">
                 </label>
-                <button class="btn btn-add" @click="addQuestionnaire">Ajouter</button>
+                <button class="btn btn-add" @click="addQuestionSimple">Ajouter</button>
             </div>
         </div>
-
     </div>
 </template>
