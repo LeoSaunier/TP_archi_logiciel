@@ -5,9 +5,9 @@ export default{
         questionnaires: Array
     },
     methods: {
-        selectQuestionnaire() {
-            console.log('Selected questionnaire:', this.questionnaire);
-            console.log('Deleting questionnaire:', this.questionnaires);
+        selectQuestionnaire(questionnaire) {
+            console.log('Selected questionnaire:', questionnaire);
+            this.$emit('selectQuestionnaire', questionnaire);
         },
         deleteQuestionnaire: function(questionnaire){
             console.log('Deleted questionnaire:', questionnaire);
@@ -40,7 +40,7 @@ export default{
     components: {
         QuestionnaireItem
     },
-    emits: ['questionnaireDeleted'],
+    emits: ['questionnaireDeleted',"selectQuestionnaire"],
 }
 </script>
 

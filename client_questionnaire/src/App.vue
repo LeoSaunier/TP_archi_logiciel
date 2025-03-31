@@ -1,14 +1,15 @@
 <script>
 import AllQuestionnaire from './components/AllQuestionnaire.vue';
 import AjoutQuestionnaire from './components/AjoutQuestionnaire.vue';
-import { update } from 'three/examples/jsm/libs/tween.module.js';
-import { add } from 'three/tsl';
+import DetailQuestionnaire from './components/DetailQuestionnaire.vue';
+import { ref } from 'vue';
 
 
 export default {
   data() {
     return {
-      questionnaires: []
+      questionnaires: [],
+      questionnaire: ref(null)
     };
   },
   methods: {
@@ -21,12 +22,16 @@ export default {
     .then(data => {
       this.questionnaires = data.questionnaires;
     });
+    },
+    selectQuestionnaire(questionnaire) {
+      this.questionnaire = questionnaire.uri;
     }
 
   },
   components: {
     AllQuestionnaire,
-    AjoutQuestionnaire
+    AjoutQuestionnaire,
+    DetailQuestionnaire
   },
   mounted() {
     fetch("http://127.0.0.1:5000/quizz/api/v1.0/questionnaires")
@@ -53,11 +58,16 @@ export default {
     <AllQuestionnaire
     :questionnaires="questionnaires"
     @questionnaireDeleted="deleteQuestionnaire"
+    @selectQuestionnaire="selectQuestionnaire"
     >
     </AllQuestionnaire>
     <AjoutQuestionnaire
     @UpdateQuestionnaire="UpdateQuestionnaire"
     ></AjoutQuestionnaire>
+    <DetailQuestionnaire 
+    v-if="questionnaire != null"
+    :questionnaire="questionnaire"
+    ></DetailQuestionnaire>
   </div>
   <div class="input-group">
  
