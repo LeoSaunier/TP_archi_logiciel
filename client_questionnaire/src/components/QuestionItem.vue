@@ -9,7 +9,7 @@ export default {
             this.$emit('deleteQuestion', this.question);
         },
         selectQuestion() {
-            console.log("selectQuestion");
+            this.$emit('selectQuestion', this.question);
         }
     },
     emits: ['deleteQuestion', 'selectQuestion'],
@@ -20,7 +20,7 @@ export default {
 
 <template>
         <div class="question-item">
-            <button class="question-item-btn" @click="selected = !selected">
+            <button class="question-item-btn" @click="selectQuestion">
                 <h4>{{ question.title }}</h4>
                 <p>{{ question.questionType }}</p>
             </button>

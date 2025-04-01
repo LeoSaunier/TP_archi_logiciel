@@ -27,7 +27,7 @@ export default {
     });
     },
     selectQuestionnaire(questionnaire) {
-      this.questionnaire = questionnaire;
+      this.questionnaire = {...questionnaire};
       fetch(questionnaire.uri+"/questions")
       .then(response => response.json())
       .then(data => {
@@ -104,6 +104,7 @@ export default {
     :name="questionnaire.name"
     @deleteQuestion="selectQuestionnaire"
     @modifyQuestionnaire="modifyQuestionnaire"
+    @updateQuestionnaire="selectQuestionnaire"
     ></DetailQuestionnaire>
   </div>
   <div class="input-group">

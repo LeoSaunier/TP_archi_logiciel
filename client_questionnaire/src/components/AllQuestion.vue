@@ -11,6 +11,10 @@ export default {
         addQuestionnaire() {
             console.log("addQuestionnaire");
         },
+        selectQuestion: function(question){
+            console.log('Selected question:', question);
+            this.$emit('selectQuestion', question);
+        },
         deleteQuestion: function(question){
             console.log('Deleted question:', question);
             console.log('Deleting question:', this.questions);
@@ -42,7 +46,7 @@ export default {
     components: {
         QuestionItem
     },
-    emits: ['questionDeleted'],
+    emits: ['questionDeleted', 'selectQuestion'],
     
 }
 
@@ -55,7 +59,8 @@ export default {
             <QuestionItem
                 v-for="question in questions"
                 :question="question"
-                @deleteQuestion="deleteQuestion">
+                @deleteQuestion="deleteQuestion"
+                @selectQuestion="selectQuestion">
             </QuestionItem>
         </ol>
     </div>
