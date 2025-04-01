@@ -33,10 +33,32 @@ export default {
       .then(data => {
         this.questions = data.questions;
       });
-
-      
-      
-    }
+    },
+    modifyQuestionnaire(questionnaire, name) {
+      this.questionnaire = questionnaire;
+      fetch(questionnaire.uri,{
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: name }),
+                method: "PUT",
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Questionnaire modified successfully");
+                    this.UpdateQuestionnaire();
+                } else if (response.status === 404) {
+                    console.error("Questionnaire not found");
+                } else if (response.status === 403) {
+                    console.error("You do not have permission to modify this questionnaire");
+                } else if (response.status === 500) {
+                    console.error("Server error while modifying questionnaire");
+                } else {
+                    console.error("Failed to modify questionnaire");
+                }
+            })
+    },
 
   },
   components: {
@@ -79,7 +101,9 @@ export default {
     v-if="questionnaire != null"
     :questionnaire="questionnaire"
     :questions="questions"
+    :name="questionnaire.name"
     @deleteQuestion="selectQuestionnaire"
+    @modifyQuestionnaire="modifyQuestionnaire"
     ></DetailQuestionnaire>
   </div>
   <div class="input-group">

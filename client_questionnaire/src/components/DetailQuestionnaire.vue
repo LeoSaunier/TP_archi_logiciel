@@ -5,27 +5,30 @@ import AllQuestion from './AllQuestion.vue';
 export default {
     props: {
         questionnaire: Object,
-        questions: Array
+        questions: Array,
+        name: String,
     },
-    setup() {
+    setup(props) {
         const selectedQuestionType = ref(null);
         const Q1selected = ref(false);
         const Q2selected = ref(false);
         const question = ref({ title: '', description: '', propositions: ['', ''] });
+        const name = ref(props.questionnaire?.name || ''); // Initialiser avec le nom du questionnaire
 
         watch(selectedQuestionType, (newValue) => {
             Q1selected.value = newValue === 'Q1';
             Q2selected.value = newValue === 'Q2';
         });
 
-        return { selectedQuestionType, Q1selected, Q2selected, question };
+        return { selectedQuestionType, Q1selected, Q2selected, question, name };
     },
     components: {
         AllQuestion
     },
     methods: {
-        updateQuestionnaire() {
-            this.$emit('updateQuestionnaire', this.questionnaire);
+        modifyQuestionnaire() {
+            console.log("modifyQuestionnaire", this.name);
+            this.$emit('modifyQuestionnaire', this.questionnaire, this.name);
         },
         addQuestionOuverte() {
             this.$emit('addQuestionOuverte', { ...this.question, type: 'Q1' });
@@ -41,15 +44,15 @@ export default {
             this.$emit('deleteQuestion', this.questionnaire);
         }
     },
-    emits: ['updateQuestionnaire', 'addQuestionOuverte', 'addQuestionSimple', 'deleteQuestion'],
+    emits: ['modifyQuestionnaire', 'addQuestionOuverte', 'addQuestionSimple', 'deleteQuestion'],
 };
 </script>
 
 <template>
     <div>
         <div>
-            <input type="text" v-model="questionnaire.name" placeholder="Questionnaire Name">
-            <button @click="updateQuestionnaire">Update</button>
+            <input type="text" v-model="this.name" placeholder="Questionnaire Name">
+            <button @click="modifyQuestionnaire">Modify</button>
         </div> 
         <AllQuestion
             :questions="questions"
