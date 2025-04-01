@@ -4,16 +4,15 @@ export default {
     props: {
         question: Object
     },
-    data() {
-        return {
-            selected: false
-        }
-    },
     methods: {
         deleteQuestion() {
-            console.log("deleteQuestion");
+            this.$emit('deleteQuestion', this.question);
+        },
+        selectQuestion() {
+            console.log("selectQuestion");
         }
-    }
+    },
+    emits: ['deleteQuestion', 'selectQuestion'],
 }
 
 </script>

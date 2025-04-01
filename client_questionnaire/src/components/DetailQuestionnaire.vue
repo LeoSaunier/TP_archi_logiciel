@@ -24,9 +24,6 @@ export default {
         AllQuestion
     },
     methods: {
-        deleteQuestionnaire() {
-            this.$emit('deleteQuestion', this.questionnaire);
-        },
         updateQuestionnaire() {
             this.$emit('updateQuestionnaire', this.questionnaire);
         },
@@ -35,9 +32,16 @@ export default {
         },
         addQuestionSimple() {
             this.$emit('addQuestionSimple', { ...this.question, type: 'Q2' });
+        },
+        selectQuestion() {
+            console.log("selectQuestion");
+        },
+        deleteQuestion() {
+            console.log('Deleting question:', this.questionnaire);
+            this.$emit('deleteQuestion', this.questionnaire);
         }
     },
-    emits: ['deleteQuestion', 'updateQuestionnaire', 'addQuestionOuverte', 'addQuestionSimple']
+    emits: ['updateQuestionnaire', 'addQuestionOuverte', 'addQuestionSimple', 'deleteQuestion'],
 };
 </script>
 
@@ -49,7 +53,7 @@ export default {
         </div> 
         <AllQuestion
             :questions="questions"
-            @deleteQuestion="deleteQuestionnaire"
+            @questionDeleted="deleteQuestion"
         >
         </AllQuestion>
         <div>

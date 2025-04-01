@@ -79,6 +79,7 @@ export default {
     v-if="questionnaire != null"
     :questionnaire="questionnaire"
     :questions="questions"
+    @deleteQuestion="selectQuestionnaire"
     ></DetailQuestionnaire>
   </div>
   <div class="input-group">
